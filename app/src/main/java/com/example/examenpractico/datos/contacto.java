@@ -2,17 +2,16 @@ package com.example.examenpractico.datos;
 
 public class contacto {
     private Integer id;
-    private String nombres,numero,nota,url,pais;
+    private String nombres,numero,nota,url;
     public contacto(){
 
     }
-    public contacto(Integer id, String nombres, String numero, String nota, String url, String pais) {
+    public contacto(Integer id, String nombres, String numero, String nota, String url) {
         this.id = id;
         this.nombres = nombres;
         this.numero = numero;
         this.nota = nota;
         this.url=url;
-        this.pais=pais;
     }
 
     public Integer getId() {
@@ -53,13 +52,5 @@ public class contacto {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public String getPais() {
-        return pais;
-    }
-
-    public void setPais(String pais) {
-        this.pais = pais;
     }
 }

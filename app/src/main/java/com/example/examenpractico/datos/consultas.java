@@ -7,16 +7,14 @@ public class consultas {
     public static final String numero="numero";
     public static final String nota="nota";
     public static final String url= "url";
-    public static final String pais="pais";
     public static final String DataBase="lista";
     public static final String CrearTablaContacto="CREATE TABLE "+contacto+" "+
             "("+
             id+" INTEGER PRIMARY KEY AUTOINCREMENT,"+
             nombres+" TEXT,"+
             numero+" TEXT,"+
-            nota+" TEXT"+
+            nota+" TEXT,"+
             url+" TEXT"+
-            pais+" TEXT"+
             ")";
     public static final String DropTableContacto="DROP TABLE IF EXISTS "+contacto;
 }

@@ -11,19 +11,19 @@ import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.renderscript.Sampler;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.examenpractico.datos.conexion;
@@ -32,6 +32,7 @@ import com.example.examenpractico.datos.consultas;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,6 +44,7 @@ private Button guardar;
 private static final int REQUESTCODECAMARA=100;
 private static final int REQUESTTAKEFOTO=101;
 private int turno=1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +55,14 @@ private int turno=1;
         e_nota=(EditText) findViewById(R.id.txtnota);
         p_spinner=(Spinner) findViewById(R.id.spinner_pais);
         guardar=(Button) findViewById(R.id.salvar);
-        String[] opciones = {""};
+        String[] opciones={
+                "",
+                "Honduras",
+                "El Salvador",
+                "Guatemala",
+                "Nicaragua",
+                "Costa Rica",
+        };
         ArrayAdapter<String> adactador = new ArrayAdapter<String>(this, R.layout.item_spinner, opciones);
         p_spinner.setAdapter(adactador);
         imagen.setOnClickListener(new View.OnClickListener() {
@@ -185,17 +194,25 @@ private int turno=1;
         }
     }
     public void agregarcontacto(){
-        /*conexion a_conexion=new conexion(this, consultas.DataBase,null,1);
+        String extencion="";
+        conexion a_conexion=new conexion(this, consultas.DataBase,null,1);
         SQLiteDatabase db=a_conexion.getWritableDatabase();
         ContentValues valores=new ContentValues();
         valores.put(consultas.nombres,e_nombre.getText().toString());
-        valores.put(consultas.numero,e_numero.getText().toString());
+        switch (p_spinner.getSelectedItem().toString()){
+            case "Honduras": {extencion="+504";}break;
+            case "Guatemala":{extencion="+502";}break;
+            case "El Salvador":{extencion="+503";}break;
+            case "Costa Rica": {extencion="+506";}break;
+            case "Nicaragua":{extencion="+505";}break;
+            default: Toast.makeText(this,"No haz seleccionado un pais",Toast.LENGTH_LONG).show();
+        }
+        valores.put(consultas.numero,extencion+e_numero.getText().toString());
         valores.put(consultas.nota,e_nota.getText().toString());
         valores.put(consultas.url,currentPhotoPath);
-        valores.put(consultas.pais,String.valueOf(p_spinner.getSelectedItem()));
         Long resultado=db.insert(consultas.contacto,consultas.id,valores);
         Toast.makeText(getApplicationContext(),"Registro guardado",Toast.LENGTH_LONG).show();
-        db.close();*/
+        db.close();
         limpiar();
     }
     public void limpiar(){
