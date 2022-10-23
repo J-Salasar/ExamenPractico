@@ -8,8 +8,10 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,6 +25,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.examenpractico.datos.conexion;
+import com.example.examenpractico.datos.consultas;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,7 +53,7 @@ private int turno=1;
         e_nota=(EditText) findViewById(R.id.txtnota);
         p_spinner=(Spinner) findViewById(R.id.spinner_pais);
         guardar=(Button) findViewById(R.id.salvar);
-        String[] opciones = {"Seleccione", "Sumar", "Restar", "Multiplicar", "Dividir"};
+        String[] opciones = {""};
         ArrayAdapter<String> adactador = new ArrayAdapter<String>(this, R.layout.item_spinner, opciones);
         p_spinner.setAdapter(adactador);
         imagen.setOnClickListener(new View.OnClickListener() {
@@ -59,8 +64,8 @@ private int turno=1;
         });
     }
     public boolean verifica(String dato,int numero){
-        String opcion1="[A-Z,a-z,Á,É,Í,Ó,Ú,Ñ,á,é,í,ó,ú,ñ]{1,200}";
-        String opcion2="[0-9,-]{1,100}";
+        String opcion1="[A-Z,a-z,Á,É,Í,Ó,Ú,Ñ,á,é,í,ó,ú,ñ,' ',0-9]{1,200}";
+        String opcion2="[0-9]{1,100}";
         switch(numero){
             case 1:{
                 return dato.matches(opcion1);
@@ -69,6 +74,9 @@ private int turno=1;
                 return dato.matches(opcion2);
             }
             case 3:{
+                return dato.matches(opcion1);
+            }
+            case 4:{
                 return dato.matches(opcion1);
             }
             default:{
@@ -82,29 +90,39 @@ private int turno=1;
             if(verifica(e_numero.getText().toString().trim(),turno)){
                 turno=3;
                 if(verifica(e_nota.getText().toString().trim(),turno)){
-                    turno=1;
-                    Toast.makeText(this,currentPhotoPath,Toast.LENGTH_LONG).show();
+                    turno = 4;
+                    if(verifica(p_spinner.getSelectedItem().toString().trim(),turno)) {
+                        turno = 1;
+                        agregarcontacto();
+                    }
+                    else{
+                        turno = 1;
+                        Toast.makeText(this, "Elija un país", Toast.LENGTH_LONG).show();
+                    }
                 }
                 else{
                     turno=1;
+                    Toast.makeText(this, "Escribe una nota", Toast.LENGTH_LONG).show();
                 }
             }
             else{
                 turno=1;
+                Toast.makeText(this, "Escribe un numero de telefono", Toast.LENGTH_LONG).show();
             }
         }
         else{
             turno=1;
+            Toast.makeText(this, "Escribe un nombre", Toast.LENGTH_LONG).show();
         }
     }
-    private void galleryAddPic(){
+    public void galleryAddPic(){
         Intent mediaScanIntent=new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File f=new File(currentPhotoPath);
         Uri contenUri=Uri.fromFile(f);
         mediaScanIntent.setData(contenUri);
         this.sendBroadcast(mediaScanIntent);
     }
-    private void dispatchTakePictureIntent(){
+    public void dispatchTakePictureIntent(){
         Intent takePictureIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if(takePictureIntent.resolveActivity(getPackageManager())!=null){
             File photoFile=null;
@@ -120,7 +138,7 @@ private int turno=1;
             }
         }
     }
-    private File createImageFile() throws IOException {
+    public File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
@@ -146,8 +164,7 @@ private int turno=1;
             galleryAddPic();
         }
     }
-
-    private void permisos(){
+    public void permisos(){
         if(ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},REQUESTCODECAMARA);
         }
@@ -166,5 +183,28 @@ private int turno=1;
                 Toast.makeText(getApplicationContext(),"Permiso Denegado",Toast.LENGTH_LONG).show();
             }
         }
+    }
+    public void agregarcontacto(){
+        /*conexion a_conexion=new conexion(this, consultas.DataBase,null,1);
+        SQLiteDatabase db=a_conexion.getWritableDatabase();
+        ContentValues valores=new ContentValues();
+        valores.put(consultas.nombres,e_nombre.getText().toString());
+        valores.put(consultas.numero,e_numero.getText().toString());
+        valores.put(consultas.nota,e_nota.getText().toString());
+        valores.put(consultas.url,currentPhotoPath);
+        valores.put(consultas.pais,String.valueOf(p_spinner.getSelectedItem()));
+        Long resultado=db.insert(consultas.contacto,consultas.id,valores);
+        Toast.makeText(getApplicationContext(),"Registro guardado",Toast.LENGTH_LONG).show();
+        db.close();*/
+        limpiar();
+    }
+    public void limpiar(){
+        e_nombre.setText("");
+        e_numero.setText("");
+        currentPhotoPath="";
+        File foto=new File(currentPhotoPath);
+        imagen.setImageURI(Uri.fromFile(foto));
+        e_nota.setText("");
+        guardar.setEnabled(false);
     }
 }
