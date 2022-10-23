@@ -37,6 +37,7 @@ private String currentPhotoPath;
 private Button guardar;
 private static final int REQUESTCODECAMARA=100;
 private static final int REQUESTTAKEFOTO=101;
+private int turno=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,28 +58,43 @@ private static final int REQUESTTAKEFOTO=101;
             }
         });
     }
+    public boolean verifica(String dato,int numero){
+        String opcion1="[A-Z,a-z,Á,É,Í,Ó,Ú,Ñ,á,é,í,ó,ú,ñ]{1,200}";
+        String opcion2="[0-9,-]{1,100}";
+        switch(numero){
+            case 1:{
+                return dato.matches(opcion1);
+            }
+            case 2:{
+                return dato.matches(opcion2);
+            }
+            case 3:{
+                return dato.matches(opcion1);
+            }
+            default:{
+                return false;
+            }
+        }
+    }
     public void validar(View view){
-        Toast.makeText(this,currentPhotoPath,Toast.LENGTH_LONG).show();
-        if((e_nombre.getText().toString()) != null){
-            if((e_numero.getText().toString()) != null){
-                if((e_nota.getText().toString()) != null){
-                    if(currentPhotoPath != null){
-
-                    }
-                    else{
-
-                    }
+        if(verifica(e_nombre.getText().toString().trim(),turno)){
+            turno=2;
+            if(verifica(e_numero.getText().toString().trim(),turno)){
+                turno=3;
+                if(verifica(e_nota.getText().toString().trim(),turno)){
+                    turno=1;
+                    Toast.makeText(this,currentPhotoPath,Toast.LENGTH_LONG).show();
                 }
                 else{
-
+                    turno=1;
                 }
             }
             else{
-
+                turno=1;
             }
         }
         else{
-
+            turno=1;
         }
     }
     private void galleryAddPic(){
