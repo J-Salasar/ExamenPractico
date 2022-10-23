@@ -42,7 +42,7 @@ public class contacto {
         return nota;
     }
 
-    public void setApellidos(String nota) {
+    public void setNota(String nota) {
         this.nota = nota;
     }
 

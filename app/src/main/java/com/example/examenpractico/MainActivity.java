@@ -36,14 +36,14 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
-private ImageView imagen;
-private EditText e_nombre,e_numero,e_nota;
-private Spinner p_spinner;
-private String currentPhotoPath;
-private Button guardar;
-private static final int REQUESTCODECAMARA=100;
-private static final int REQUESTTAKEFOTO=101;
-private int turno=1;
+    private ImageView imagen;
+    private EditText e_nombre,e_numero,e_nota;
+    private Spinner p_spinner;
+    private String currentPhotoPath;
+    private Button guardar;
+    private static final int REQUESTCODECAMARA=100;
+    private static final int REQUESTTAKEFOTO=101;
+    private int turno=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -223,5 +223,9 @@ private int turno=1;
         imagen.setImageURI(Uri.fromFile(foto));
         e_nota.setText("");
         guardar.setEnabled(false);
+    }
+    public void vercontacto(View view){
+        Intent mirarcontacto=new Intent(this,ActivityLista.class);
+        startActivity(mirarcontacto);
     }
 }
