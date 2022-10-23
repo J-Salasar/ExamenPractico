@@ -3,6 +3,7 @@ package com.example.examenpractico;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -22,5 +23,8 @@ private Spinner p_spinner;
         e_numero=(EditText) findViewById(R.id.txtnumero);
         e_nota=(EditText) findViewById(R.id.txtnota);
         p_spinner=(Spinner) findViewById(R.id.spinner_pais);
+        String[] opciones = {"Seleccione", "Sumar", "Restar", "Multiplicar", "Dividir"};
+        ArrayAdapter<String> adactador = new ArrayAdapter<String>(this, R.layout.item_spinner, opciones);
+        p_spinner.setAdapter(adactador);
     }
 }
