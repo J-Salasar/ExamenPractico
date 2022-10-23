@@ -99,6 +99,7 @@ public class ActivityLista extends AppCompatActivity {
         arreglocontacto=new ArrayList<String>();
         for(int i=0;i<listacontato.size();i++){
             arreglocontacto.add(
+                    listacontato.get(i).getId()+" | "+
                     listacontato.get(i).getNombres()+"\n"+
                     listacontato.get(i).getNumero()
             );
