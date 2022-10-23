@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUESTCODECAMARA=100;
     private static final int REQUESTTAKEFOTO=101;
     private int turno=1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

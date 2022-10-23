@@ -30,17 +30,6 @@ public class ActivityLista extends AppCompatActivity {
     private ArrayList<contacto> listacontato;
     private ArrayList<String> arreglocontacto;
     private int turno=1;
-    public boolean verifica(String dato,int numero){
-        String opcion1="[A-Z,a-z,Á,É,Í,Ó,Ú,Ñ,á,é,í,ó,ú,ñ,' ',0-9]{1,200}";
-        switch(numero){
-            case 1:{
-                return dato.matches(opcion1);
-            }
-            default:{
-                return false;
-            }
-        }
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +88,6 @@ public class ActivityLista extends AppCompatActivity {
         arreglocontacto=new ArrayList<String>();
         for(int i=0;i<listacontato.size();i++){
             arreglocontacto.add(
-                    listacontato.get(i).getId()+" | "+
                     listacontato.get(i).getNombres()+"\n"+
                     listacontato.get(i).getNumero()
             );

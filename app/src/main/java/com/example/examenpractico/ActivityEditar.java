@@ -38,7 +38,7 @@ public class ActivityEditar extends AppCompatActivity {
     private int turno=1,valor=0;
     private conexion conectar;
     private ImageView imagen;
-    private String foto, currentPhotoPath,extencion;
+    private String foto, currentPhotoPath,indice;
     private static final int REQUESTCODECAMARA=100;
     private static final int REQUESTTAKEFOTO=101;
     @Override
@@ -106,7 +106,7 @@ public class ActivityEditar extends AppCompatActivity {
         SQLiteDatabase db= conectar.getWritableDatabase();
         if(db!=null){
             db.execSQL("DELETE FROM "+ consultas.contacto+
-                    " WHERE "+consultas.nombres+"="+nombre_texto.getText().toString());
+                    " WHERE "+consultas.id+"="+Integer.parseInt(indice));
             db.close();
             Toast.makeText(getApplicationContext(),"Se elimino el registro.",Toast.LENGTH_LONG).show();
             nombre_texto.setEnabled(false);
@@ -135,7 +135,7 @@ public class ActivityEditar extends AppCompatActivity {
                     consultas.numero+"='"+numero_texto.getText().toString()+"', "+
                     consultas.nota+"='"+nota_texto.getText().toString()+"', "+
                     consultas.url+"='"+currentPhotoPath+"' "+
-                    "WHERE "+consultas.nombres+"="+buscador_texto.getText().toString());
+                    "WHERE "+consultas.id+"="+Integer.parseInt(indice));
             db.close();
             Toast.makeText(getApplicationContext(),"Se actualizo los datos.",Toast.LENGTH_LONG).show();
             nombre_texto.setEnabled(false);
@@ -153,7 +153,8 @@ public class ActivityEditar extends AppCompatActivity {
         try{
             SQLiteDatabase db= conectar.getWritableDatabase();
             String[] parametro={buscador_texto.getText().toString()};
-            String[] folders={consultas.nombres,
+            String[] folders={consultas.id,
+                    consultas.nombres,
                     consultas.numero,
                     consultas.nota,
                     consultas.url
@@ -162,10 +163,11 @@ public class ActivityEditar extends AppCompatActivity {
             Cursor data=db.query(consultas.contacto,folders,condicion,parametro,null,null,null);
             data.moveToFirst();
             if(data.getCount()>0){
-                nombre_texto.setText(data.getString(0));
-                numero_texto.setText(data.getString(1));
-                nota_texto.setText(data.getString(2));
-                foto=data.getString(3);
+                indice=data.getString(0);
+                nombre_texto.setText(data.getString(1));
+                numero_texto.setText(data.getString(2));
+                nota_texto.setText(data.getString(3));
+                foto=data.getString(4);
                 currentPhotoPath=foto;
                 File foto1=new File(foto);
                 imagen.setImageURI(Uri.fromFile(foto1));
@@ -202,7 +204,7 @@ public class ActivityEditar extends AppCompatActivity {
             catch (IOException ex){
             }
             if(photoFile!=null){
-                Uri photoURI= FileProvider.getUriForFile(this,"xyz.buscaminas.ejemplo4.fileprovider",photoFile);
+                Uri photoURI= FileProvider.getUriForFile(this,"com.example.examenpractico.fileprovider",photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,photoURI);
                 startActivityForResult(takePictureIntent,REQUESTTAKEFOTO);
             }
