@@ -99,7 +99,7 @@ public class ActivityLista extends AppCompatActivity {
         arreglocontacto=new ArrayList<String>();
         for(int i=0;i<listacontato.size();i++){
             arreglocontacto.add(
-                    listacontato.get(i).getNombres()+" \n "+
+                    listacontato.get(i).getNombres()+"\n"+
                     listacontato.get(i).getNumero()
             );
         }
@@ -107,5 +107,9 @@ public class ActivityLista extends AppCompatActivity {
     public void atras(View view){
         Intent inicio=new Intent(this,MainActivity.class);
         startActivity(inicio);
+    }
+    public void editar(View view){
+        Intent mirar=new Intent(this,ActivityEditar.class);
+        startActivity(mirar);
     }
 }
